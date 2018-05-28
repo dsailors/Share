@@ -23,10 +23,10 @@ $startPic = $in{startPic};
 if ($startPic eq '') { $startPic = 0; }
 
 $countPic = $in{countPic};
-if ($countPic eq '') { $countPic = 40; }
+if ($countPic eq '') { $countPic = 42; }
 
-print "start = $startPic <br> \n";
-print "count = $countPic <br>\n";
+
+$nextStartPic = $startPic + $countPic;
 
 #-----------------------------
 $year=`date +%Y`; chop($year);
@@ -45,10 +45,28 @@ $PID=$$;
 
 #print "Folder = $picFolder <br>\n";
 
+
+
+$dusk = `du -sk $picFolder 2>&1`;
+@temp = split(/["\t"]+/,$dusk);
+$size = $temp[0];
+
 @return = `ls -lt $picFolder 2>&1`;
 $totalPic = $#return;
 
-print "<center> <h1>$totalPic pictures in the folder </center></h1> <br>\n";
+print "xx $return[$nextStartPic] <br>\n";
+
+# - Name read and parse
+#@lsrec  = split(/[' ']+/,$return[$nextStartPic]);
+#@LR = split(/[-]+/,$lsrec[8]);
+#print "left = $LR[0] <br> \n";
+#print "right = $LR[1] <br> \n";
+
+print "<center> <h3>$totalPic pictures, Size = $size kb,  </center></h3>\n";
+
+print "<a href=PicSho.cgi?startPic=$nextStartPic&countPic=$countPic > xxxxxxxx</a> <br> \n";
+print "start = $startPic , count = $countPic <br>\n";
+
 for ($i = $startPic + 1; $i <= $startPic + $countPic; $i++)
   {
      chop($return[$i]);
